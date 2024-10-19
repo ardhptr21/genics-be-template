@@ -5,6 +5,11 @@ import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { ZodError } from 'zod';
 
+export const reqLoggerMiddleware = (req: Request, _: Response, next: NextFunction) => {
+  logger.info(`${req.method} - ${req.url} (${req.ip})`);
+  next();
+};
+
 export const notFoundMiddleware = (_: Request, res: Response) => {
   const httpResponse = new HTTPResponse()
     .withStatus(StatusCodes.NOT_FOUND)
