@@ -1,17 +1,22 @@
 import { Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
+
+export interface HTTPResponseType {
+  success: boolean;
+  code: number;
+  message?: string;
+  data?: unknown;
+  error?: Record<string, unknown>;
+  meta?: Record<string, unknown>;
+}
 
 export class HTTPResponse<T> {
-  private r: Response;
   private success: boolean = true;
-  private status: number = 200;
+  private status: number = StatusCodes.OK;
   private message?: string;
   private data?: T;
   private error?: Record<string, unknown>;
   private meta?: Record<string, unknown>;
-
-  public constructor(r: Response) {
-    this.r = r;
-  }
 
   public withStatus(status: number) {
     if (status >= 400) this.success = false;
@@ -24,30 +29,35 @@ export class HTTPResponse<T> {
     return this;
   }
 
-  withData(data: T) {
+  public withData(data: T) {
     this.data = data;
     return this;
   }
 
-  withMeta(meta: Record<string, unknown>) {
+  public withMeta(meta: Record<string, unknown>) {
     this.meta = meta;
     return this;
   }
 
-  withError(error?: Record<string, unknown>) {
+  public withError(error?: Record<string, unknown>) {
     this.success = false;
     this.error = error;
     return this;
   }
 
-  public send() {
-    return this.r.status(this.status).json({
+  public parse(): HTTPResponseType {
+    return {
       success: this.success,
       code: this.status,
       message: this.message,
       meta: this.meta,
       data: this.data,
       error: this.error
-    });
+    };
   }
 }
+
+export const handleHTTPResponse = (res: Response, httpResponse: HTTPResponse<any>) => {
+  const payload = httpResponse.parse();
+  res.status(payload.code).json(payload);
+};

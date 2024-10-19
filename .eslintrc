@@ -1,6 +1,11 @@
 {
   "parser": "@typescript-eslint/parser",
-  "extends": ["plugin:prettier/recommended", "prettier", "eslint:recommended"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:vitest-globals/recommended",
+    "plugin:prettier/recommended",
+    "prettier"
+  ],
   "plugins": ["@typescript-eslint"],
   "parserOptions": {
     "ecmaVersion": 2022,
@@ -9,7 +14,8 @@
   },
   "env": {
     "es6": true,
-    "node": true
+    "node": true,
+    "vitest-globals/env": true
   },
   "rules": {
     "no-var": "error",

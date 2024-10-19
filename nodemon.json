@@ -4,5 +4,5 @@
   "ext": "ts,json,env,js,cjs,mjs",
   "watch": ["*.ts", ".env*", "*.json"],
   "ignore": ["node_modules/"],
-  "exec": "ts-node ./src/index.ts"
+  "exec": "tsx ./src/server.ts"
 }
