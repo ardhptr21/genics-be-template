@@ -1,9 +1,9 @@
-import { envSchemaValidator } from '@/validators/common/env-validator';
+import { envModelValidator } from '@/models/common/env-model';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const parsed = envSchemaValidator.safeParse(process.env);
+const parsed = envModelValidator.safeParse(process.env);
 
 if (!parsed.success) {
   console.error('Invalid environment variables:');

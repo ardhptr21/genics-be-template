@@ -25,10 +25,6 @@ export const globalErrorMiddleware = (
 ) => {
   if (res.headersSent) return next(err);
 
-  if (err instanceof Error) {
-    logger.error(err.message, err);
-  }
-
   let httpResponse: HTTPResponse<any>;
 
   if (err instanceof HTTPException) {
@@ -42,6 +38,7 @@ export const globalErrorMiddleware = (
       .withError({ issues: err.errors })
       .withStatus(StatusCodes.BAD_REQUEST);
   } else {
+    logger.error((err as Error).message, err);
     httpResponse = new HTTPResponse()
       .withMessage('Internal server error.')
       .withStatus(StatusCodes.INTERNAL_SERVER_ERROR);

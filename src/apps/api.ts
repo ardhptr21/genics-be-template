@@ -1,11 +1,16 @@
-import cors from '@/configs/cors';
-import base from '@/http/base-http';
+import 'express-async-errors';
+// !express-async-errors must be on top (before import express)
+import express from 'express';
+
 import {
   globalErrorMiddleware,
   notFoundMiddleware,
   reqLoggerMiddleware
 } from '@/middlewares/base-middleware';
-import express from 'express';
+
+import cors from '@/configs/cors';
+import auth from '@/http/auth-http';
+import base from '@/http/base-http';
 
 const app = express();
 
@@ -20,11 +25,12 @@ app.use(reqLoggerMiddleware);
  *    ROUTES HANDLING
  *------------------------**/
 app.use('/', base);
+app.use('/auth', auth);
 
 /**----------------------
  *    GLOBAL HANDLING
  *------------------------**/
-app.use(notFoundMiddleware);
+app.use('/*', notFoundMiddleware);
 app.use(globalErrorMiddleware);
 
 export default app;

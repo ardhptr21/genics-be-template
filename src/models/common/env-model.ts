@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const envSchemaValidator = z.object({
+export const envModelValidator = z.object({
   /**----------------------
    *    APP BASE ENV
    *------------------------**/
@@ -27,5 +27,10 @@ export const envSchemaValidator = z.object({
   /**----------------------
    *    DATABASE ENV
    *------------------------**/
-  DB_URL: z.string().trim()
+  DB_URL: z.string().trim(),
+
+  /**----------------------
+   *    JWT ENV
+   *------------------------**/
+  JWT_SECRET: z.string().trim().min(16)
 });
