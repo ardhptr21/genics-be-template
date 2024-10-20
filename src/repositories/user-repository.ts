@@ -18,3 +18,7 @@ export const isUserExists = async (criteria: { email?: string; username?: string
     })) > 0
   );
 };
+
+export const findUserById = async (id: number) => {
+  return await db.user.findFirst({ where: { id } });
+};

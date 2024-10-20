@@ -1,16 +1,17 @@
 import { HTTPException } from '@/exceptions/http-exception';
 import { handleHTTPResponse, HTTPResponse } from '@/libs/http';
 import { logger } from '@/libs/logger';
+import { Middleware } from '@/types/common';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { ZodError } from 'zod';
 
-export const reqLoggerMiddleware = (req: Request, _: Response, next: NextFunction) => {
+export const reqLoggerMiddleware: Middleware = (req, _, next) => {
   logger.info(`${req.method} - ${req.url} (${req.ip})`);
   next();
 };
 
-export const notFoundMiddleware = (_: Request, res: Response) => {
+export const notFoundMiddleware: Middleware = (_, res) => {
   const httpResponse = new HTTPResponse()
     .withStatus(StatusCodes.NOT_FOUND)
     .withMessage('Route not found.');
